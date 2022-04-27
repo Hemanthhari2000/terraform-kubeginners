@@ -1,9 +1,22 @@
+provider "aws" {
+  region = "us-east-1"
+  shared_credentials_files = ["~/.aws/credentials"]
+}
+
+data "aws_subnet_ids" "subnets" {
+  vpc_id = var.vpc_id
+}
+
+data "aws_availability_zones" "available" {
+
+}
+
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "17.24.0"
   cluster_name    = var.cluster_name
   cluster_version = "1.20"
-  subnets         = module.vpc.private_subnets
+  subnets         = var.subnet_id
 
   vpc_id = var.vpc_id
 
@@ -29,10 +42,10 @@ module "eks" {
   ]
 }
 
-data "aws_eks_cluster" "cluster" {
+data "aws_eks_cluster" "kubeginners_cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_eks_cluster_auth" "cluster" {
+data "aws_eks_cluster_auth" "kubeginners_cluster_auth" {
   name = module.eks.cluster_id
 }
