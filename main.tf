@@ -5,20 +5,26 @@ provider "aws" {
 
 data "aws_subnet_ids" "subnets" {
   vpc_id = var.vpc_id
-}
-
-data "aws_availability_zones" "available" {
 
 }
+
+#data "aws_availability_zones" "available" {
+#
+#}
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "17.24.0"
   cluster_name    = var.cluster_name
   cluster_version = "1.20"
-  subnets         = var.subnet_id
-
+  subnets         = [tolist(data.aws_subnet_ids.subnets.ids)[0],tolist(data.aws_subnet_ids.subnets.ids)[1]]
   vpc_id = var.vpc_id
+
+  tags = {
+    Name = "kubeginners-cluster"
+  }
+
+  manage_aws_auth = false
 
   workers_group_defaults = {
     root_volume_type = "gp2"
@@ -46,6 +52,6 @@ data "aws_eks_cluster" "kubeginners_cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_eks_cluster_auth" "kubeginners_cluster_auth" {
-  name = module.eks.cluster_id
-}
+#data "aws_eks_cluster_auth" "kubeginners_cluster_auth" {
+#  name = module.eks.cluster_id
+#}

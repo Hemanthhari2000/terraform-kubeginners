@@ -9,7 +9,7 @@ resource "aws_security_group" "kubeginners_worker_group_one_sg" {
     to_port   = 22
     protocol  = "tcp"
 
-    cidr_blocks = [    ]
+    cidr_blocks =  ["0.0.0.0/0"]
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_security_group" "kubeginners_worker_group_two_sg" {
     to_port   = 22
     protocol  = "tcp"
 
-    cidr_blocks = [    ]
+    cidr_blocks =  ["0.0.0.0/0"]
   }
 }
 
@@ -38,9 +38,6 @@ resource "aws_security_group" "all_worker_mgmt" {
     protocol  = "tcp"
 
     cidr_blocks = [
-      "10.0.0.0/8",
-      "172.16.0.0/12",
-      "192.168.0.0/16",
     ]
   }
 }
