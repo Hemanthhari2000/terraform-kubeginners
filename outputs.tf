@@ -28,3 +28,7 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = var.cluster_name
 }
+
+#output "lb_ip" {
+#  value = kubernetes_service.kubeginners-app.
+#}
