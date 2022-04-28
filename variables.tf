@@ -15,23 +15,3 @@ variable "instance_type" {
   type    = string
   default = "t2.micro"
 }
-
-#variable "rules" {
-#  type = list(object({
-#    port        = number
-#    proto       = string
-#    cidr_blocks = list(string)
-#  }))
-#  default = [
-#    {
-#      port        = 80
-#      proto       = "tcp"
-#      cidr_blocks = ["77.4.141.152/32"]
-#    },
-#    {
-#      port        = 22
-#      proto       = "tcp"
-#      cidr_blocks = ["77.4.141.152/32"]
-#    }
-#  ]
-#}

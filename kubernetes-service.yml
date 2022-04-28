@@ -3,12 +3,12 @@ kind:  Service
 metadata:
   name: eks-kubeginners-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app : eks-kubeginners-app
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 80 #Pods port
       nodePort: 30006
 

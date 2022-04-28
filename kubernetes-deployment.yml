@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eks-kubeginners-deployment
-  namespace: kubeginners-app
+ # namespace: kubeginners-app
   labels:
     app: eks-kubeginners-app
 spec:

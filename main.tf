@@ -8,6 +8,14 @@ data "aws_subnet_ids" "subnets" {
 
 }
 
+module "ssh_key_pair" {
+  source = "cloudposse/key-pair/aws"
+  name                  = "kubeginners-key-pair"
+  ssh_public_key_path   = "."
+  generate_ssh_key      = "true"
+  private_key_extension = ".pem"
+  public_key_extension  = ".pub"
+}
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
@@ -20,7 +28,7 @@ module "eks" {
 
   subnets         = [tolist(data.aws_subnet_ids.subnets.ids)[0],tolist(data.aws_subnet_ids.subnets.ids)[1]]
   vpc_id = var.vpc_id
-  cluster_security_group_id = aws_security_group.all_worker_mgmt.id
+  //cluster_security_group_id = aws_security_group.all_worker_mgmt.id
 
   tags = {
     Name = "kubeginners-cluster"
@@ -36,19 +44,13 @@ module "eks" {
     {
       name                          = "worker-group-1"
       instance_type                 = var.instance_type
-      additional_userdata           = fileexists("user-data.sh") ? file("user-data.sh") : null
+      key_name = "kubeginners-key-pair"
       additional_security_group_ids = [aws_security_group.kubeginners_worker_group_one_sg.id]
       asg_desired_capacity          = 2
     }
-#    {
-#      name                          = "worker-group-2"
-#      instance_type                 = var.instance_type
-#      //additional_userdata           = "echo foo bar"
-#      additional_security_group_ids = [aws_security_group.kubeginners_worker_group_two_sg.id]
-#      asg_desired_capacity          = 1
-#    },
   ]
 }
+
 
 data "aws_eks_cluster" "kubeginners_cluster" {
   name = module.eks.cluster_id
