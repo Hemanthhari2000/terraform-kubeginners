@@ -38,7 +38,7 @@ module "eks" {
     {
       name                          = "worker-group-1"
       instance_type                 = var.instance_type
-      //additional_userdata           = "echo foo bar"
+      additional_userdata           = fileexists("user-data.sh") ? file("user-data.sh") : null
       additional_security_group_ids = [aws_security_group.kubeginners_worker_group_one_sg.id]
       asg_desired_capacity          = 2
     }
