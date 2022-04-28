@@ -8,9 +8,6 @@ data "aws_subnet_ids" "subnets" {
 
 }
 
-#data "aws_availability_zones" "available" {
-#
-#}
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
@@ -23,6 +20,7 @@ module "eks" {
 
   subnets         = [tolist(data.aws_subnet_ids.subnets.ids)[0],tolist(data.aws_subnet_ids.subnets.ids)[1]]
   vpc_id = var.vpc_id
+  cluster_security_group_id = aws_security_group.all_worker_mgmt.id
 
   tags = {
     Name = "kubeginners-cluster"
