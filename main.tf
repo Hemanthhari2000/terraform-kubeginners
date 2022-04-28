@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region                   = "us-east-1"
   shared_credentials_files = ["~/.aws/credentials"]
 }
 
@@ -8,14 +8,6 @@ data "aws_subnet_ids" "subnets" {
 
 }
 
-module "ssh_key_pair" {
-  source = "cloudposse/key-pair/aws"
-  name                  = "kubeginners-key-pair"
-  ssh_public_key_path   = "."
-  generate_ssh_key      = "true"
-  private_key_extension = ".pem"
-  public_key_extension  = ".pub"
-}
 
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
@@ -26,8 +18,8 @@ module "eks" {
   //creates kubeconfig file to use kubectl
   write_kubeconfig = true
 
-  subnets         = [tolist(data.aws_subnet_ids.subnets.ids)[0],tolist(data.aws_subnet_ids.subnets.ids)[1]]
-  vpc_id = var.vpc_id
+  subnets = [tolist(data.aws_subnet_ids.subnets.ids)[0], tolist(data.aws_subnet_ids.subnets.ids)[1]]
+  vpc_id  = var.vpc_id
   //cluster_security_group_id = aws_security_group.all_worker_mgmt.id
 
   tags = {
@@ -44,7 +36,7 @@ module "eks" {
     {
       name                          = "worker-group-1"
       instance_type                 = var.instance_type
-      key_name = "kubeginners-key-pair"
+      key_name                      = "hemanth-key-pair"
       additional_security_group_ids = [aws_security_group.kubeginners_worker_group_one_sg.id]
       asg_desired_capacity          = 2
     }

@@ -8,7 +8,7 @@ variable "subnet_id" {
   default = "subnet-039d7bd1c43f973cc"
 }
 variable "cluster_name" {
-  type = string
+  type    = string
   default = "eks-kubeginners"
 }
 variable "instance_type" {

@@ -7,7 +7,7 @@ resource "aws_security_group" "kubeginners_worker_group_one_sg" {
     to_port   = 22
     protocol  = "tcp"
 
-    cidr_blocks =  ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 80
